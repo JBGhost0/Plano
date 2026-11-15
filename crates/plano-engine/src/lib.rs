@@ -75,7 +75,11 @@ pub fn complete_current(chain: &mut Chain, now: Ts) -> Vec<Effect> {
     if chain.state != ChainState::EnCours {
         return out;
     }
-    if let Some(i) = chain.steps.iter().position(|s| s.state == StepState::Active) {
+    if let Some(i) = chain
+        .steps
+        .iter()
+        .position(|s| s.state == StepState::Active)
+    {
         chain.steps[i].state = StepState::Terminee;
         advance(chain, i, now, &mut out);
     }
@@ -89,7 +93,11 @@ pub fn evaluate(chain: &mut Chain, now: Ts) -> Vec<Effect> {
         if chain.state != ChainState::EnCours {
             break;
         }
-        let Some(i) = chain.steps.iter().position(|s| s.state == StepState::Active) else {
+        let Some(i) = chain
+            .steps
+            .iter()
+            .position(|s| s.state == StepState::Active)
+        else {
             break;
         };
         let due = chain.steps[i].due_at.unwrap_or(i64::MAX);
@@ -116,7 +124,11 @@ pub fn retry(chain: &mut Chain, now: Ts, extra_seconds: i64) {
     if chain.state != ChainState::Interrompue {
         return;
     }
-    if let Some(i) = chain.steps.iter().position(|s| s.state == StepState::Manquee) {
+    if let Some(i) = chain
+        .steps
+        .iter()
+        .position(|s| s.state == StepState::Manquee)
+    {
         chain.steps[i].state = StepState::Active;
         chain.steps[i].due_at = Some(now + extra_seconds);
         chain.state = ChainState::EnCours;
@@ -139,7 +151,11 @@ pub fn validate_missed(chain: &mut Chain, now: Ts) -> Vec<Effect> {
     if chain.state != ChainState::Interrompue {
         return out;
     }
-    if let Some(i) = chain.steps.iter().position(|s| s.state == StepState::Manquee) {
+    if let Some(i) = chain
+        .steps
+        .iter()
+        .position(|s| s.state == StepState::Manquee)
+    {
         chain.steps[i].state = StepState::AutoValidee;
         out.push(Effect::StepAutoValidated { step: i });
         advance(chain, i, now, &mut out);
@@ -177,7 +193,10 @@ mod tests {
         let mut c = sample(false);
         start(&mut c, 0);
         let fx = evaluate(&mut c, 101);
-        assert_eq!(fx, vec![Effect::StepMissed { step: 0 }, Effect::ChainInterrupted]);
+        assert_eq!(
+            fx,
+            vec![Effect::StepMissed { step: 0 }, Effect::ChainInterrupted]
+        );
         assert_eq!(c.state, ChainState::Interrompue);
         assert_eq!(c.steps[1].state, StepState::EnAttente);
 

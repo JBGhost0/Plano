@@ -4,7 +4,11 @@ use plano_engine::{Clock, SystemClock};
 use plano_store::Store;
 
 #[derive(Parser)]
-#[command(name = "plano-cli", version, about = "Plano — planificateur local hors ligne")]
+#[command(
+    name = "plano-cli",
+    version,
+    about = "Plano — planificateur local hors ligne"
+)]
 struct Cli {
     /// Chemin du coffre (fichier SQLite)
     #[arg(long, default_value = "plano.db")]
@@ -74,7 +78,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
             TaskCmd::Done { id } => {
                 let ok = store.set_status(id.parse::<Id>()?, ItemStatus::Termine, now)?;
-                println!("{}", if ok { "Tâche terminée." } else { "Tâche introuvable." });
+                println!(
+                    "{}",
+                    if ok {
+                        "Tâche terminée."
+                    } else {
+                        "Tâche introuvable."
+                    }
+                );
             }
         },
     }

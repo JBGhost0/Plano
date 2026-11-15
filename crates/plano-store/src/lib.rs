@@ -40,7 +40,8 @@ pub struct Store {
 }
 
 fn parse_id(s: &str) -> Result<Id, StoreError> {
-    s.parse::<Id>().map_err(|e| StoreError::Data(format!("{e}")))
+    s.parse::<Id>()
+        .map_err(|e| StoreError::Data(format!("{e}")))
 }
 
 impl Store {
