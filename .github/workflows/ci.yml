@@ -8,10 +8,23 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
       - run: cargo fmt --all -- --check
-      - run: cargo clippy --workspace --all-targets -- -D warnings
-      - run: cargo test --workspace
+      - run: cargo clippy --workspace --exclude plano-ui --all-targets -- -D warnings
+      - run: cargo test --workspace --exclude plano-ui
+
+  # Prototype d'interface : expérimental, un échec ne bloque pas le reste.
+  ui:
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build -p plano-ui

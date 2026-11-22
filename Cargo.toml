@@ -5,6 +5,7 @@ members = [
     "crates/plano-engine",
     "crates/plano-store",
     "crates/plano-cli",
+    "crates/plano-ui",
 ]
 
 [workspace.package]
