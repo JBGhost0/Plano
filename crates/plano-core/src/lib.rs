@@ -1,4 +1,5 @@
 //! plano-core : types du domaine. Aucune entrée/sortie, aucun accès disque.
+pub mod schedule;
 
 use std::{fmt, str::FromStr};
 use uuid::Uuid;
