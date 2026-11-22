@@ -1,5 +1,6 @@
 //! plano-engine : logique de planification pure (horloge injectée, aucune E/S).
 pub mod schedule;
+pub mod time;
 
 use plano_core::{Chain, ChainState, Deadline, StepState, Ts};
 use std::time::{SystemTime, UNIX_EPOCH};
